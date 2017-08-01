@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 
 import _get from '../utils/get';
 import identity from '../utils/identity';
@@ -177,16 +178,16 @@ function createFieldClass(customControlPropsMap = {}, s = defaultStrategy) {
         );
       }
 
-      return React.createElement(
-        s.Control,
-        {
-          ...controlProps,
-          control,
-          controlProps: control.props,
-          component: control.type,
-          mapProps,
-          ...(defaultControlPropsMap[controlType] || {}),
-        });
+      return (
+        <s.Control
+          {...controlProps}
+          control={control}
+          controlProps={control.props}
+          component={control.type}
+          mapProps={mapProps}
+          {...defaultControlPropsMap[controlType] || {}}
+        />
+      );
     }
 
     mapChildrenToControl(children) {
