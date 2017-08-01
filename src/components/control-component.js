@@ -1,4 +1,5 @@
-import React, { Component, createElement, cloneElement, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component, createElement, cloneElement } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import identity from '../utils/identity';
@@ -136,18 +137,9 @@ function createControlClass(customControlPropsMap = {}, s = defaultStrategy) {
     constructor(props) {
       super(props);
 
-      this.getChangeAction = this.getChangeAction.bind(this);
-      this.getValidateAction = this.getValidateAction.bind(this);
-
-      this.handleKeyPress = this.handleKeyPress.bind(this);
-      this.createEventHandler = this.createEventHandler.bind(this);
       this.handleFocus = this.createEventHandler('focus').bind(this);
       this.handleBlur = this.createEventHandler('blur').bind(this);
       this.handleUpdate = this.createEventHandler('change').bind(this);
-      this.handleChange = this.handleChange.bind(this);
-      this.handleLoad = this.handleLoad.bind(this);
-      this.getMappedProps = this.getMappedProps.bind(this);
-      this.attachNode = this.attachNode.bind(this);
 
       this.willValidate = false;
 
@@ -196,7 +188,7 @@ function createControlClass(customControlPropsMap = {}, s = defaultStrategy) {
       }
     }
 
-    getMappedProps() {
+    getMappedProps = () => {
       const props = this.props;
       const { mapProps } = props;
       const { viewValue } = this.state;
@@ -221,9 +213,9 @@ function createControlClass(customControlPropsMap = {}, s = defaultStrategy) {
       }
 
       return mapProps(originalProps);
-    }
+    };
 
-    getChangeAction(event) {
+    getChangeAction = event => {
       const {
         model,
         modelValue,
@@ -236,9 +228,9 @@ function createControlClass(customControlPropsMap = {}, s = defaultStrategy) {
       return changeAction(model, getValue(value), {
         currentValue: modelValue,
       });
-    }
+    };
 
-    getValidateAction(value, eventName) {
+    getValidateAction = (value, eventName) => {
       const {
         validators,
         errors,
@@ -275,7 +267,7 @@ function createControlClass(customControlPropsMap = {}, s = defaultStrategy) {
       }
 
       return false;
-    }
+    };
 
     getAsyncValidateAction(value, eventName) {
       const {
@@ -432,12 +424,12 @@ function createControlClass(customControlPropsMap = {}, s = defaultStrategy) {
         : value;
     }
 
-    handleChange(event) {
+    handleChange = event => {
       this.setViewValue(getValue(event));
       this.handleUpdate(event);
-    }
+    };
 
-    handleKeyPress(event) {
+    handleKeyPress = event => {
       const {
         controlProps: { onKeyPress },
         dispatch,
@@ -452,9 +444,9 @@ function createControlClass(customControlPropsMap = {}, s = defaultStrategy) {
       }
 
       if (onKeyPress) onKeyPress(event);
-    }
+    };
 
-    handleLoad() {
+    handleLoad = () => {
       const {
         model,
         modelValue,
@@ -490,9 +482,9 @@ function createControlClass(customControlPropsMap = {}, s = defaultStrategy) {
       dispatchBatchIfNeeded(model, loadActions, dispatch);
 
       if (onLoad) onLoad(modelValue, fieldValue, this.node);
-    }
+    };
 
-    createEventHandler(eventName) {
+    createEventHandler = eventName => {
       const {
         dispatch,
         model,
@@ -558,13 +550,13 @@ function createControlClass(customControlPropsMap = {}, s = defaultStrategy) {
           persistEventWithCallback(controlEventHandler || identity)
         )(event);
       };
-    }
+    };
 
-    attachNode() {
+    attachNode = () => {
       const node = findDOMNode && findDOMNode(this);
 
       if (node) this.node = node;
-    }
+    };
 
     validate() {
       const {

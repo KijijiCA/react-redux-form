@@ -4,7 +4,7 @@ import Immutable from 'immutable';
 import { createStore } from 'redux';
 import { combineReducers } from 'redux-immutablejs';
 import { Provider } from 'react-redux';
-import TestUtils from 'react-addons-test-utils';
+import TestUtils from 'react-dom/test-utils';
 
 import { actions, formReducer } from '../src';
 import {

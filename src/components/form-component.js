@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import shallowEqual from '../utils/shallow-equal';
 import _get from '../utils/get';
@@ -64,16 +65,6 @@ const defaultStrategy = {
 
 function createFormClass(s = defaultStrategy) {
   class Form extends Component {
-    constructor(props) {
-      super(props);
-
-      this.handleSubmit = this.handleSubmit.bind(this);
-      this.handleReset = this.handleReset.bind(this);
-      this.handleValidSubmit = this.handleValidSubmit.bind(this);
-      this.handleInvalidSubmit = this.handleInvalidSubmit.bind(this);
-      this.attachNode = this.attachNode.bind(this);
-    }
-
     getChildContext() {
       return {
         model: this.props.model,
@@ -128,14 +119,14 @@ function createFormClass(s = defaultStrategy) {
       }
     }
 
-    attachNode(node) {
+    attachNode = node => {
       if (!node) return;
 
       this._node = node;
 
       this._node.submit = this.handleSubmit;
       if (this.props.getRef) this.props.getRef(node);
-    }
+    };
 
     validate(nextProps, initial = false) {
       const {
@@ -273,7 +264,7 @@ function createFormClass(s = defaultStrategy) {
       }
     }
 
-    handleValidSubmit() {
+    handleValidSubmit = () => {
       const {
         dispatch,
         model,
@@ -284,9 +275,9 @@ function createFormClass(s = defaultStrategy) {
       dispatch(s.actions.setPending(model));
 
       if (onSubmit) onSubmit(modelValue);
-    }
+    };
 
-    handleInvalidSubmit() {
+    handleInvalidSubmit = () => {
       const { onSubmitFailed, formValue, dispatch } = this.props;
 
       if (onSubmitFailed) {
@@ -296,13 +287,13 @@ function createFormClass(s = defaultStrategy) {
       if (!s.get(formValue, ['$form', 'submitFailed'])) {
         dispatch(s.actions.setSubmitFailed(this.props.model));
       }
-    }
+    };
 
-    handleReset(e) {
+    handleReset = e => {
       if (e) e.preventDefault();
 
       this.props.dispatch(s.actions.reset(this.props.model));
-    }
+    };
 
     handleIntents() {
       const {
@@ -333,7 +324,7 @@ function createFormClass(s = defaultStrategy) {
       });
     }
 
-    handleSubmit(e) {
+    handleSubmit = e => {
       if (e && !this.props.action) e.preventDefault();
 
       const {
@@ -396,7 +387,7 @@ function createFormClass(s = defaultStrategy) {
       ]));
 
       return modelValue;
-    }
+    };
 
     render() {
       const {
